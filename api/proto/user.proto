@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package user;
+option go_package = "/api/generated/user";
+
+service UserService {
+    // Unary RPCs
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+    rpc GetUser(GetUserRequest) returns (GetUserResponse);
+    // Client-Streaming: Upload multiple users
+    rpc UploadUsers(stream CreateUserRequest) returns (UploadUsersResponse);
+    // Server-Streaming: Stream users matching a filter
+    rpc ListUsers(ListUsersRequest) returns (stream GetUserResponse);
+    // Bi-Directional Streaming: Real-time user updates
+    rpc UpdateUsers(stream UpdateUserRequest) returns (stream UpdateUserResponse);
+}
+
+message CreateUserRequest {
+    string name = 1;
+    string email = 2;
+}
+
+message CreateUserResponse {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+}
+
+message GetUserRequest {
+    string id = 1;
+}
+
+message GetUserResponse {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+}
+
+message UploadUsersResponse {
+    int32 count = 1;
+    repeated string ids = 2;
+}
+
+message ListUsersRequest {
+    string name_filter = 1;
+}
+
+message UpdateUserRequest {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+}
+
+message UpdateUserResponse {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+    string status = 4;
+}
